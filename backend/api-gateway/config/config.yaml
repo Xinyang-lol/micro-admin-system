@@ -1,0 +1,7 @@
+http_port: 8080
+consul_address: 127.0.0.1:8500
+redis_addr: 127.0.0.1:6379
+redis_db: 0
+jwt_secret: micro-admin-secret
+request_timeout_seconds: 3
+upload_dir: ./uploads

@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.vite/
+uploads/
+*.log
+*.exe
+*.test
+.DS_Store
+Thumbs.db
+backend/bin/
+backend/uploads/
+backend/coverage.out

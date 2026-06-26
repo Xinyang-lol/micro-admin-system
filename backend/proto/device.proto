@@ -1,0 +1,47 @@
+syntax = "proto3";
+
+package microadmin.device;
+
+option go_package = "micro-admin-system/backend/proto/gen;pb";
+
+service DeviceService {
+  rpc ListDevices(DeviceListRequest) returns (DeviceListResponse);
+  rpc CreateDevice(DeviceSaveRequest) returns (DeviceIDResponse);
+  rpc UpdateDevice(DeviceSaveRequest) returns (DeviceEmpty);
+  rpc DeleteDevice(DeviceIDRequest) returns (DeviceEmpty);
+  rpc GetDeviceStatistics(DeviceEmpty) returns (DeviceStatisticsResponse);
+  rpc ListDeviceTypes(DeviceEmpty) returns (DeviceTypeListResponse);
+  rpc CreateDeviceType(DeviceTypeSaveRequest) returns (DeviceIDResponse);
+  rpc UpdateDeviceType(DeviceTypeSaveRequest) returns (DeviceEmpty);
+  rpc DeleteDeviceType(DeviceIDRequest) returns (DeviceEmpty);
+}
+
+message DeviceEmpty {}
+message DeviceIDRequest { int64 id = 1; }
+message DeviceIDResponse { int64 id = 1; }
+message DeviceListRequest { int32 page = 1; int32 page_size = 2; string keyword = 3; int64 type_id = 4; string status = 5; }
+message Device {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  int64 type_id = 4;
+  string type_name = 5;
+  string status = 6;
+  string location = 7;
+  string remark = 8;
+  string created_at = 9;
+}
+message DeviceSaveRequest {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  int64 type_id = 4;
+  string status = 5;
+  string location = 6;
+  string remark = 7;
+}
+message DeviceListResponse { repeated Device items = 1; int64 total = 2; }
+message DeviceStatisticsResponse { int64 total = 1; int64 online = 2; int64 offline = 3; int64 repair = 4; map<string, int64> type_stats = 5; }
+message DeviceType { int64 id = 1; string name = 2; string code = 3; string remark = 4; }
+message DeviceTypeSaveRequest { int64 id = 1; string name = 2; string code = 3; string remark = 4; }
+message DeviceTypeListResponse { repeated DeviceType items = 1; }

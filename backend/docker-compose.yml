@@ -1,0 +1,36 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: micro-admin-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: micro_admin
+      TZ: Asia/Shanghai
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/01-init.sql:ro
+
+  redis:
+    image: redis:7
+    container_name: micro-admin-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+
+  consul:
+    image: hashicorp/consul:1.19
+    container_name: micro-admin-consul
+    restart: unless-stopped
+    ports:
+      - "8500:8500"
+    command: agent -dev -client=0.0.0.0
+
+volumes:
+  mysql-data:

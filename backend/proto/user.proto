@@ -1,0 +1,130 @@
+syntax = "proto3";
+
+package microadmin.user;
+
+option go_package = "micro-admin-system/backend/proto/gen;pb";
+
+service UserService {
+  rpc Login(LoginRequest) returns (LoginResponse);
+  rpc GetUserInfo(UserIDRequest) returns (UserInfo);
+  rpc ListUsers(ListRequest) returns (UserListResponse);
+  rpc CreateUser(UserSaveRequest) returns (IDResponse);
+  rpc UpdateUser(UserSaveRequest) returns (Empty);
+  rpc DeleteUser(IDRequest) returns (Empty);
+  rpc UpdateUserStatus(UserStatusRequest) returns (Empty);
+  rpc ResetPassword(UserPasswordRequest) returns (Empty);
+  rpc AssignUserRoles(UserRolesRequest) returns (Empty);
+  rpc ListRoles(ListRequest) returns (RoleListResponse);
+  rpc CreateRole(RoleSaveRequest) returns (IDResponse);
+  rpc UpdateRole(RoleSaveRequest) returns (Empty);
+  rpc DeleteRole(IDRequest) returns (Empty);
+  rpc AssignRoleMenus(RoleMenusRequest) returns (Empty);
+  rpc ListMenus(Empty) returns (MenuTreeResponse);
+  rpc CreateMenu(MenuSaveRequest) returns (IDResponse);
+  rpc UpdateMenu(MenuSaveRequest) returns (Empty);
+  rpc DeleteMenu(IDRequest) returns (Empty);
+  rpc ListDepts(Empty) returns (DeptTreeResponse);
+  rpc CreateDept(DeptSaveRequest) returns (IDResponse);
+  rpc UpdateDept(DeptSaveRequest) returns (Empty);
+  rpc DeleteDept(IDRequest) returns (Empty);
+  rpc CheckPermission(PermissionRequest) returns (PermissionResponse);
+}
+
+message Empty {}
+message IDRequest { int64 id = 1; }
+message UserIDRequest { int64 user_id = 1; }
+message IDResponse { int64 id = 1; }
+message ListRequest { int32 page = 1; int32 page_size = 2; string keyword = 3; }
+message LoginRequest { string username = 1; string password = 2; }
+message LoginResponse { string token = 1; UserInfo user = 2; }
+message PermissionRequest { int64 user_id = 1; string permission = 2; }
+message PermissionResponse { bool allowed = 1; }
+
+message UserInfo {
+  int64 id = 1;
+  string username = 2;
+  string nickname = 3;
+  string email = 4;
+  string phone = 5;
+  int32 status = 6;
+  int64 dept_id = 7;
+  repeated string roles = 8;
+  repeated string permissions = 9;
+}
+
+message User {
+  int64 id = 1;
+  string username = 2;
+  string nickname = 3;
+  string email = 4;
+  string phone = 5;
+  int32 status = 6;
+  int64 dept_id = 7;
+  repeated int64 role_ids = 8;
+  string created_at = 9;
+}
+
+message UserSaveRequest {
+  int64 id = 1;
+  string username = 2;
+  string nickname = 3;
+  string password = 4;
+  string email = 5;
+  string phone = 6;
+  int32 status = 7;
+  int64 dept_id = 8;
+  repeated int64 role_ids = 9;
+}
+
+message UserStatusRequest { int64 id = 1; int32 status = 2; }
+message UserPasswordRequest { int64 id = 1; string password = 2; }
+message UserRolesRequest { int64 id = 1; repeated int64 role_ids = 2; }
+message UserListResponse { repeated User items = 1; int64 total = 2; }
+
+message Role {
+  int64 id = 1;
+  string name = 2;
+  string code = 3;
+  string remark = 4;
+  int32 status = 5;
+  repeated int64 menu_ids = 6;
+}
+message RoleSaveRequest { int64 id = 1; string name = 2; string code = 3; string remark = 4; int32 status = 5; }
+message RoleMenusRequest { int64 id = 1; repeated int64 menu_ids = 2; }
+message RoleListResponse { repeated Role items = 1; int64 total = 2; }
+
+message Menu {
+  int64 id = 1;
+  int64 parent_id = 2;
+  string name = 3;
+  string path = 4;
+  string component = 5;
+  string permission = 6;
+  string icon = 7;
+  int32 type = 8;
+  int32 sort = 9;
+  repeated Menu children = 10;
+}
+message MenuSaveRequest {
+  int64 id = 1;
+  int64 parent_id = 2;
+  string name = 3;
+  string path = 4;
+  string component = 5;
+  string permission = 6;
+  string icon = 7;
+  int32 type = 8;
+  int32 sort = 9;
+}
+message MenuTreeResponse { repeated Menu items = 1; }
+
+message Dept {
+  int64 id = 1;
+  int64 parent_id = 2;
+  string name = 3;
+  int32 sort = 4;
+  int32 status = 5;
+  repeated Dept children = 6;
+}
+message DeptSaveRequest { int64 id = 1; int64 parent_id = 2; string name = 3; int32 sort = 4; int32 status = 5; }
+message DeptTreeResponse { repeated Dept items = 1; }

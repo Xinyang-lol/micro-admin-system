@@ -1,0 +1,8 @@
+service_name: user-service
+service_id: user-service-1
+host: 127.0.0.1
+grpc_port: 9001
+mysql_dsn: root:123456@tcp(127.0.0.1:3306)/micro_admin?charset=utf8mb4&parseTime=true&loc=Local
+consul_address: 127.0.0.1:8500
+jwt_secret: micro-admin-secret
+jwt_ttl_hours: 24

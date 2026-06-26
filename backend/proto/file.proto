@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package microadmin.file;
+
+option go_package = "micro-admin-system/backend/proto/gen;pb";
+
+service FileService {
+  rpc UploadFileMeta(UploadFileMetaRequest) returns (FileIDResponse);
+  rpc ListFiles(FileListRequest) returns (FileListResponse);
+  rpc GetFile(FileIDRequest) returns (FileInfo);
+  rpc DeleteFile(FileIDRequest) returns (FileEmpty);
+}
+
+message FileEmpty {}
+message FileIDRequest { int64 id = 1; }
+message FileIDResponse { int64 id = 1; }
+message UploadFileMetaRequest {
+  string original_name = 1;
+  string stored_name = 2;
+  string path = 3;
+  int64 size = 4;
+  string content_type = 5;
+  int64 uploader_id = 6;
+}
+message FileListRequest { int32 page = 1; int32 page_size = 2; string keyword = 3; }
+message FileInfo {
+  int64 id = 1;
+  string original_name = 2;
+  string stored_name = 3;
+  string path = 4;
+  int64 size = 5;
+  string content_type = 6;
+  int64 uploader_id = 7;
+  string created_at = 8;
+}
+message FileListResponse { repeated FileInfo items = 1; int64 total = 2; }
