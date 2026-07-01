@@ -4,6 +4,17 @@ $Root = Split-Path -Parent $PSScriptRoot
 $Backend = Join-Path $Root "backend"
 $Frontend = Join-Path $Root "frontend"
 
+$commonToolPaths = @(
+    "C:\Program Files\Docker\Docker\resources\bin",
+    "C:\Program Files\Go\bin"
+)
+
+foreach ($toolPath in $commonToolPaths) {
+    if ((Test-Path $toolPath) -and ($env:Path -notlike "*$toolPath*")) {
+        $env:Path = "$toolPath;$env:Path"
+    }
+}
+
 function Test-CommandExists {
     param(
         [string]$Name,

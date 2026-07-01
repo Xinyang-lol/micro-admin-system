@@ -194,11 +194,30 @@ docker compose ps
 
 说明 Docker Desktop 没安装，或者安装后没有重启终端。请安装 Docker Desktop，然后重新打开 PowerShell。
 
-### 4. `go` 不是内部或外部命令
+如果已经安装 Docker Desktop，但 Docker Desktop 启动失败，通常是 Windows 没启用 WSL2。可以右键管理员运行项目根目录里的：
+
+```text
+enable-wsl-for-docker.bat
+```
+
+运行完成后如果提示需要重启电脑，请先重启，再打开 Docker Desktop。
+
+### 4. Docker Desktop 提示 unable to start
+
+通常是 WSL2 或虚拟机平台没有启用。处理方式：
+
+1. 右键 `enable-wsl-for-docker.bat`
+2. 选择“以管理员身份运行”
+3. 等命令执行完
+4. 如果提示重启，重启电脑
+5. 打开 Docker Desktop
+6. 再运行 `start-windows.bat`
+
+### 5. `go` 不是内部或外部命令
 
 说明 Go 没安装，或者环境变量没有生效。请安装 Go 1.22 以上版本，然后重新打开 PowerShell。
 
-### 5. `npm` 无法运行或脚本被禁止
+### 6. `npm` 无法运行或脚本被禁止
 
 如果 PowerShell 提示 `npm.ps1 cannot be loaded`，可以用：
 
@@ -207,7 +226,7 @@ npm.cmd install
 npm.cmd run dev
 ```
 
-### 6. MySQL 里没有初始化数据
+### 7. MySQL 里没有初始化数据
 
 如果之前启动过 Docker，旧数据卷可能还在。可以重置数据库：
 
